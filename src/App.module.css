@@ -1,0 +1,81 @@
+/* App.module.css */
+
+.mainWindow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: gray;
+}
+
+.form {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.form input[type="text"],
+.form input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.form input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.form label.rememberMe input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.form label.rememberMe {
+    display: flex;
+    align-items: center;
+    width: fit-content
+}
+
+.form button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.form button[type="submit"] {
+    background-color: #28a745;
+}
+
+.form button[type="reset"] {
+    margin-left: 10px;
+    background-color: #dc3545;
+}
+
+.form p {
+    margin-top: 20px;
+}
+
+.form p label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form p input[type="radio"] {
+    margin-right: 5px;
+}
+
+.form p label input[type="radio"] {
+    margin-right: 5px;
+}
