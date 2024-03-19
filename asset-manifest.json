@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/RnD-formik/static/css/main.f9a2c883.css",
+    "main.js": "/RnD-formik/static/js/main.583f1b91.js",
+    "index.html": "/RnD-formik/index.html",
+    "main.f9a2c883.css.map": "/RnD-formik/static/css/main.f9a2c883.css.map",
+    "main.583f1b91.js.map": "/RnD-formik/static/js/main.583f1b91.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f9a2c883.css",
+    "static/js/main.583f1b91.js"
+  ]
+}
