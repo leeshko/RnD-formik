@@ -9,11 +9,15 @@ function App() {
   const [team, setTeam] = useState("");
   const [teamOptions, setTeamOptions] = useState([]);
 
+  const [submittedData, setSubmittedData] = useState(null);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
     const formData = new FormData(form);
-    console.log("submit", formData.get("name"));
+    const data = Object.fromEntries(formData.entries());
+    setSubmittedData(data);
+    console.log(data);
   };
 
   const handleReset = (e) => {
@@ -81,10 +85,9 @@ function App() {
         <label className={styles.rememberMe}>
           <input
             type="checkbox"
+            name="isRemember"
             checked={isRemember}
-            onChange={(e) => {
-              setIsRemember(e.target.checked);
-            }}
+            onChange={(e) => setIsRemember(e.target.checked)}
           />
           <span>Remember me</span>
         </label>
@@ -131,11 +134,7 @@ function App() {
             value={team}
           >
             {teams.map((team) => (
-              <option
-                key={team.value}
-                value={team.value}
-                onChange={() => setTeam(team.value)}
-              >
+              <option key={team.value} value={team.value}>
                 {team.label}
               </option>
             ))}
@@ -157,6 +156,12 @@ function App() {
 
         <button type="submit">Submit</button>
         <button type="reset">Reset</button>
+        {submittedData && (
+          <div>
+            <h2>Submitted Data:</h2>
+            <pre>{JSON.stringify(submittedData, null, 2)}</pre>
+          </div>
+        )}
       </form>
     </div>
   );
