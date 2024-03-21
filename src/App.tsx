@@ -1,34 +1,31 @@
 import React, { useState } from "react";
 import styles from "./App.module.css";
+import { SubmitHandler, useForm } from "react-hook-form";
 
-function App() {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [isRemember, setIsRemember] = useState(false);
-  const [fanDuration, setFanDuration] = useState("");
-  const [team, setTeam] = useState("");
-  const [teamOptions, setTeamOptions] = useState<string[]>([]);
+const App: React.FC<{}> = () => {
+  type Inputs = {
+    name: string;
+    email: string;
+    isRemember: boolean;
+    fanDuration: string;
+    team: string;
+    teamOptions: string[];
+  };
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
+    setSubmittedData(data);
+  };
 
   const [submittedData, setSubmittedData] = useState<any>(null);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const form = e.target;
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
-    setSubmittedData(data);
-    console.log(data);
-  };
-
-  const handleReset = (e) => {
-    e.preventDefault();
-    setName("");
-    setEmail("");
-    setIsRemember(false);
-    setFanDuration("");
-    setTeam("");
-    setTeamOptions([]);
-  };
 
   const teams = [
     { value: "", label: "Select a team" },
@@ -37,58 +34,28 @@ function App() {
     { value: "mercedes", label: "Mercedes" },
   ];
 
-  const handleMainSelectChange = (e) => {
-    const selectedTeam = e.target.value;
-    setTeam(selectedTeam);
-
-    switch (selectedTeam) {
-      case "redBull":
-        setTeamOptions(["Max Verstappen", "Sergio Pérez"]);
-        break;
-      case "ferrari":
-        setTeamOptions(["Charles Leclerc", "Carlos Sainz Jr."]);
-        break;
-      case "mercedes":
-        setTeamOptions(["Lewis Hamilton", "George Russell"]);
-        break;
-      default:
-        setTeamOptions([]);
-        break;
-    }
+  const driversOption = {
+    redBull: ["Max Verstappen", "Sergio Pérez"],
+    ferrari: ["Charles Leclerc", "Carlos Sainz Jr."],
+    mercedes: ["Lewis Hamilton", "George Russell"],
   };
 
   return (
     <div className={styles.mainWindow}>
-      <form
-        className={styles.form}
-        onSubmit={handleSubmit}
-        onReset={handleReset}
-      >
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <label>
           Fans Name:
-          <input
-            type="text"
-            name="name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+          <input type="text" {...register("name", { required: true })} />
+          {errors.name && (
+            <span className={styles.error}>This field is required</span>
+          )}
         </label>
         <label>
           Fans Email:
-          <input
-            type="email"
-            name="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+          <input type="email" {...register("email")} />
         </label>
         <label className={styles.rememberMe}>
-          <input
-            type="checkbox"
-            name="isRemember"
-            checked={isRemember}
-            onChange={(e) => setIsRemember(e.target.checked)}
-          />
+          <input type="checkbox" {...register("isRemember")} />
           <span>Remember me</span>
         </label>
 
@@ -97,30 +64,27 @@ function App() {
           <label>
             <input
               type="radio"
-              name="fanDuration"
               value="less1"
-              checked={fanDuration === "less1"}
-              onChange={() => setFanDuration("less1")}
+              checked={watch("fanDuration") === "less1"}
+              {...register("fanDuration")}
             />
             less than 1 year
           </label>
           <label>
             <input
               type="radio"
-              name="fanDuration"
               value="less3"
-              checked={fanDuration === "less3"}
-              onChange={() => setFanDuration("less3")}
+              checked={watch("fanDuration") === "less3"}
+              {...register("fanDuration")}
             />
             more than 1 and less than 3 years
           </label>
           <label>
             <input
               type="radio"
-              name="fanDuration"
               value="more3"
-              checked={fanDuration === "more3"}
-              onChange={() => setFanDuration("more3")}
+              checked={watch("fanDuration") === "more3"}
+              {...register("fanDuration")}
             />
             more than 3 years
           </label>
@@ -128,11 +92,7 @@ function App() {
 
         <p>
           Select Team:
-          <select
-            name="teamSelect"
-            onChange={handleMainSelectChange}
-            value={team}
-          >
+          <select {...register("team")}>
             {teams.map((team) => (
               <option key={team.value} value={team.value}>
                 {team.label}
@@ -141,11 +101,11 @@ function App() {
           </select>
         </p>
 
-        {teamOptions.length > 0 && (
+        {driversOption[watch("team")]?.length > 0 && (
           <p>
             Select Driver:
-            <select name="driverSelect">
-              {teamOptions.map((driver, index) => (
+            <select {...register("teamOptions")}>
+              {driversOption[watch("team")]?.map((driver, index) => (
                 <option key={index} value={driver}>
                   {driver}
                 </option>
@@ -155,7 +115,9 @@ function App() {
         )}
 
         <button type="submit">Submit</button>
-        <button type="reset">Reset</button>
+        <button type="reset" onClick={() => reset()}>
+          Reset
+        </button>
         {submittedData && (
           <div>
             <h2>Submitted Data:</h2>
@@ -165,6 +127,6 @@ function App() {
       </form>
     </div>
   );
-}
+};
 
 export default App;
