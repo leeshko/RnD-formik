@@ -1,9 +1,14 @@
-import React, { useState } from "react";
-import { Formik, Field, Form, ErrorMessage, useField } from "formik";
+import React from "react";
+import { Formik, Field, Form, ErrorMessage } from "formik";
 import styles from "./App.module.css";
 
-function App() {
+const drivers = {
+  redBull: ["Max Verstappen", "Sergio Pérez"],
+  ferrari: ["Charles Leclerc", "Carlos Sainz Jr."],
+  mercedes: ["Lewis Hamilton", "George Russell"],
+};
 
+function App() {
   const teams = [
     { value: "", label: "Select a team" },
     { value: "redBull", label: "Red Bull" },
@@ -26,20 +31,6 @@ function App() {
       errors.email = "Invalid email address";
     }
     return errors;
-  };
-
-  const getDriversList = (team) => {
-    switch (team) {
-      case "redBull":
-        return ["Max Verstappen", "Sergio Pérez"];
-
-      case "ferrari":
-        return ["Charles Leclerc", "Carlos Sainz Jr."];
-      case "mercedes":
-        return ["Lewis Hamilton", "George Russell"];
-      default:
-        return [];
-    }
   };
 
   return (
@@ -125,16 +116,22 @@ function App() {
                 ))}
               </Field>
             </p>
-            {formik.values.team.length > 0 && (
+            {formik.values.team && (
               <p>
                 Select Driver:
                 <Field name="selectedDriver" as="select">
-                  {getDriversList(formik.values.team).map((driver, index) => (
+                  <option value="">Select driver</option>
+                  {drivers[formik.values.team]?.map((driver, index) => (
                     <option key={index} value={driver}>
                       {driver}
                     </option>
                   ))}
                 </Field>
+                <ErrorMessage
+                  name="selectedDriver"
+                  component="div"
+                  className={styles.error}
+                />
               </p>
             )}
 
