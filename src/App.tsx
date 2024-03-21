@@ -7,9 +7,9 @@ function App() {
   const [isRemember, setIsRemember] = useState(false);
   const [fanDuration, setFanDuration] = useState("");
   const [team, setTeam] = useState("");
-  const [teamOptions, setTeamOptions] = useState([]);
+  const [teamOptions, setTeamOptions] = useState<string[]>([]);
 
-  const [submittedData, setSubmittedData] = useState(null);
+  const [submittedData, setSubmittedData] = useState<any>(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
